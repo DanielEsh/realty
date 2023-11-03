@@ -15,10 +15,19 @@ enum RealtyObjectType {
   APARTMENT
 }
 
+model Property {
+  id Int @id @default(autoincrement())
+  name String
+  description String?
+  realtyObjects RealtyObject[]
+}
+
 model RealtyObject {
   id          Int      @id @default(autoincrement())
   number      String
   type        RealtyObjectType @default(FLAT)
+  property    Property @relation(fields: [propertyId], references: [id])
+  propertyId Int
   rooms       Int
   floor       Int
   total_floors Int

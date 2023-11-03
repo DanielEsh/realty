@@ -11,4 +11,6 @@ export class RealtyObjectEntity implements RealtyObject {
   plan: string;
   originalPrice: number;
   price: number;
+
+  propertyId: number;
 }

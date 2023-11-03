@@ -7,4 +7,5 @@ export class CreateRealtyObjectDto {
   plan: string;
   originalPrice: number;
   price: number;
+  propertyId: number;
 }
