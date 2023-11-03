@@ -22,12 +22,21 @@ model Property {
   realtyObjects RealtyObject[]
 }
 
+model Furnish {
+  id Int @id @default(autoincrement())
+  name String
+  description String?
+  realtyObjects RealtyObject[]
+}
+
 model RealtyObject {
   id          Int      @id @default(autoincrement())
   number      String
   type        RealtyObjectType @default(FLAT)
   property    Property @relation(fields: [propertyId], references: [id])
   propertyId Int
+  furnish    Furnish? @relation(fields: [furnishId], references: [id])
+  furnishId Int?
   rooms       Int
   floor       Int
   total_floors Int

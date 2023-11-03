@@ -13,4 +13,5 @@ export class RealtyObjectEntity implements RealtyObject {
   price: number;
 
   propertyId: number;
+  furnishId: number | null;
 }
