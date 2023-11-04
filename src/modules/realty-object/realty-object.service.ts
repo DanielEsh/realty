@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Benefit } from '@prisma/client';
+import { Benefit, Prisma } from '@prisma/client';
 import { PrismaService } from '../../prisma/prisma.service';
 import { CreateRealtyObjectDto } from './dto/create-realty-object.dto';
 
@@ -13,6 +13,7 @@ interface findAllParams {
   benefits?: Benefit['id'][];
   furnish?: number;
   property?: number;
+  rooms?: number[];
 }
 
 @Injectable()
@@ -37,7 +38,7 @@ export class RealtyObjectService {
       params;
 
     const conditionsFilters = () => {
-      const filters: any = {
+      const filters: Prisma.RealtyObjectWhereInput = {
         price: {
           gte: minPrice,
           lte: maxPrice,
@@ -71,6 +72,12 @@ export class RealtyObjectService {
           is: {
             id: params.property,
           },
+        };
+      }
+
+      if (params.rooms.length) {
+        filters.rooms = {
+          in: params.rooms,
         };
       }
 

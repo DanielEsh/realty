@@ -59,4 +59,7 @@ export class FilterQueryParamsDto {
   @IsInt()
   @IsOptional()
   public property: number;
+
+  @IsOptional()
+  public rooms: string;
 }
