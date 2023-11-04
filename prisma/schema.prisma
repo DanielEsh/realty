@@ -37,11 +37,12 @@ model Benefit {
 }
 
 model RealtyObjectBenefit {
-  id Int @id @default(autoincrement())
   realtyObjectId Int
   benefitId Int
   realtyObject RealtyObject @relation(fields: [realtyObjectId], references: [id])
   benefit Benefit @relation(fields: [benefitId], references: [id])
+
+  @@id([realtyObjectId, benefitId])
 }
 
 model RealtyObject {

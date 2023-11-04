@@ -1,5 +1,3 @@
-import { BenefitsEntity } from '../../benefits/benefits.entity';
-
 export class CreateRealtyObjectDto {
   number: string;
   rooms: number;
@@ -10,4 +8,5 @@ export class CreateRealtyObjectDto {
   originalPrice: number;
   price: number;
   propertyId: number;
+  benefits?: number[];
 }

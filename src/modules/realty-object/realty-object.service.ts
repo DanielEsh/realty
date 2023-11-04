@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { CreateRealtyObjectDto } from './dto/create-realty-object.dto';
-import { connect } from 'rxjs';
 
 @Injectable()
 export class RealtyObjectService {
@@ -9,7 +8,14 @@ export class RealtyObjectService {
 
   public async create(createRealtyObjectDto: CreateRealtyObjectDto) {
     return this.prisma.realtyObject.create({
-      data: createRealtyObjectDto,
+      data: {
+        ...createRealtyObjectDto,
+        benefits: {
+          create: createRealtyObjectDto.benefits?.map((benefitId) => ({
+            benefitId,
+          })),
+        },
+      },
     });
   }
 
@@ -17,6 +23,9 @@ export class RealtyObjectService {
     const realtyObjects = await this.prisma.realtyObject.findMany({
       take,
       cursor: cursor ? { id: cursor } : undefined,
+      include: {
+        benefits: true,
+      },
     });
 
     const totalCount = await this.prisma.realtyObject.count();
