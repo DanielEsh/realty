@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Benefit } from '@prisma/client';
+import { Benefit, RealtyObject } from '@prisma/client';
 import { PrismaService } from '../../prisma/prisma.service';
 import { CreateRealtyObjectDto } from './dto/create-realty-object.dto';
 
@@ -34,12 +34,8 @@ export class RealtyObjectService {
     const { take, cursor, minPrice, maxPrice, minArea, maxArea, benefits } =
       params;
 
-    console.log('PARAMS', params);
-
-    const realtyObjects = await this.prisma.realtyObject.findMany({
-      take,
-      cursor: cursor ? { id: cursor } : undefined,
-      where: {
+    const conditionsFilters = () => {
+      const filters: any = {
         price: {
           gte: minPrice,
           lte: maxPrice,
@@ -48,14 +44,25 @@ export class RealtyObjectService {
           gte: minArea,
           lte: maxArea,
         },
-        benefits: {
+      };
+
+      if (params.benefits.length) {
+        filters.benefits = {
           some: {
             benefitId: {
               in: benefits,
             },
           },
-        },
-      },
+        };
+      }
+
+      return filters;
+    };
+
+    const realtyObjects = await this.prisma.realtyObject.findMany({
+      take,
+      cursor: cursor ? { id: cursor } : undefined,
+      where: conditionsFilters(),
       include: {
         property: {
           select: {
@@ -88,13 +95,17 @@ export class RealtyObjectService {
       realtyObjects.length === take && realtyObjects.length < totalCount;
 
     const filteredRealtyObjects = realtyObjects.filter((realtyObject) => {
-      const realtyObjectBenefitsIds = realtyObject.benefits.map(
-        (benefit) => benefit.benefit.id,
-      );
+      if (params.benefits.length) {
+        const realtyObjectBenefitsIds = realtyObject.benefits.map(
+          (benefit) => benefit.benefit.id,
+        );
 
-      return params.benefits.every((benefitId) =>
-        realtyObjectBenefitsIds.includes(benefitId),
-      );
+        return params.benefits.every((benefitId) =>
+          realtyObjectBenefitsIds.includes(benefitId),
+        );
+      }
+
+      return realtyObject;
     });
 
     const transformedRealtyObjectResponse = filteredRealtyObjects.map(
