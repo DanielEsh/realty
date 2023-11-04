@@ -1,6 +1,15 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Query,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
 import { RealtyObjectService } from './realty-object.service';
 import { CreateRealtyObjectDto } from './dto/create-realty-object.dto';
+import { FilterQueryParamsDto } from './dto/filter-query-params.dto';
 
 @Controller('api/filter')
 export class RealtyObjectController {
@@ -12,7 +21,19 @@ export class RealtyObjectController {
   }
 
   @Get()
-  findAll(@Query('cursor') cursor: number | null, @Query('take') take: number) {
-    return this.realtyObjectService.findAll(+cursor, +take);
+  @UsePipes(
+    new ValidationPipe({
+      transform: true,
+      transformOptions: { enableImplicitConversion: true },
+    }),
+  )
+  findAll(@Query() queryParams: FilterQueryParamsDto) {
+    console.log('queryParams', queryParams);
+    return this.realtyObjectService.findAll({
+      cursor: queryParams.cursor,
+      take: queryParams.take,
+      minPrice: queryParams.min_price,
+      maxPrice: queryParams.max_price,
+    });
   }
 }

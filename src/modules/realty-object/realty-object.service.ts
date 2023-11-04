@@ -2,6 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { CreateRealtyObjectDto } from './dto/create-realty-object.dto';
 
+interface findAllParams {
+  cursor: number | null;
+  take: number | null;
+  minPrice?: number | null;
+  maxPrice?: number | null;
+}
+
 @Injectable()
 export class RealtyObjectService {
   constructor(private prisma: PrismaService) {}
@@ -19,10 +26,18 @@ export class RealtyObjectService {
     });
   }
 
-  public async findAll(cursor: number | null, take: number) {
+  public async findAll(params: findAllParams) {
+    const { take, cursor, minPrice, maxPrice } = params;
+
     const realtyObjects = await this.prisma.realtyObject.findMany({
       take,
       cursor: cursor ? { id: cursor } : undefined,
+      where: {
+        price: {
+          gte: minPrice,
+          lte: maxPrice,
+        },
+      },
       include: {
         property: {
           select: {
