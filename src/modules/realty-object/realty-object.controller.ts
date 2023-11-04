@@ -40,6 +40,7 @@ export class RealtyObjectController {
       furnish: queryParams.furnish,
       property: queryParams.property,
       rooms: queryParams.benefits?.split(',').map((item) => +item) ?? [],
+      type: queryParams.type?.split(',').map((item) => item.trim()) ?? [],
     });
   }
 }
