@@ -3,10 +3,12 @@ import { PrismaService } from '../../prisma/prisma.service';
 import { CreateRealtyObjectDto } from './dto/create-realty-object.dto';
 
 interface findAllParams {
-  cursor: number | null;
-  take: number | null;
-  minPrice?: number | null;
-  maxPrice?: number | null;
+  cursor: number;
+  take: number;
+  minPrice?: number;
+  maxPrice?: number;
+  minArea?: number;
+  maxArea?: number;
 }
 
 @Injectable()
@@ -27,7 +29,7 @@ export class RealtyObjectService {
   }
 
   public async findAll(params: findAllParams) {
-    const { take, cursor, minPrice, maxPrice } = params;
+    const { take, cursor, minPrice, maxPrice, minArea, maxArea } = params;
 
     const realtyObjects = await this.prisma.realtyObject.findMany({
       take,
@@ -36,6 +38,10 @@ export class RealtyObjectService {
         price: {
           gte: minPrice,
           lte: maxPrice,
+        },
+        area: {
+          gte: minArea,
+          lte: maxArea,
         },
       },
       include: {

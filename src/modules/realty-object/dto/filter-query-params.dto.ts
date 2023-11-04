@@ -16,4 +16,12 @@ export class FilterQueryParamsDto {
   @IsInt()
   @IsOptional()
   public max_price?: number;
+
+  @IsInt()
+  @IsOptional()
+  public min_area?: number;
+
+  @IsInt()
+  @IsOptional()
+  public max_area?: number;
 }
