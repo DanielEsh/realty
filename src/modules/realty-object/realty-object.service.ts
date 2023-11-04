@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Benefit, RealtyObject } from '@prisma/client';
+import { Benefit } from '@prisma/client';
 import { PrismaService } from '../../prisma/prisma.service';
 import { CreateRealtyObjectDto } from './dto/create-realty-object.dto';
 
@@ -11,6 +11,7 @@ interface findAllParams {
   minArea?: number;
   maxArea?: number;
   benefits?: Benefit['id'][];
+  furnish?: number;
 }
 
 @Injectable()
@@ -52,6 +53,14 @@ export class RealtyObjectService {
             benefitId: {
               in: benefits,
             },
+          },
+        };
+      }
+
+      if (params.furnish) {
+        filters.furnish = {
+          is: {
+            id: params.furnish,
           },
         };
       }
