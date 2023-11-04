@@ -1,4 +1,28 @@
-import { IsInt, IsOptional } from 'class-validator';
+import {
+  isInt,
+  IsInt,
+  IsOptional,
+  ValidationArguments,
+  ValidatorConstraint,
+  ValidatorConstraintInterface,
+} from 'class-validator';
+
+@ValidatorConstraint({ name: 'isIntArray', async: false })
+export class IsIntArray implements ValidatorConstraintInterface {
+  validate(value: any): Promise<boolean> | boolean {
+    if (!value) return true;
+
+    if (!Array.isArray(value)) {
+      return false;
+    }
+
+    return value.every((item) => Number.isInteger(item));
+  }
+
+  defaultMessage(validationArguments?: ValidationArguments): string {
+    return `${validationArguments.property} must be an array of integers`;
+  }
+}
 
 export class FilterQueryParamsDto {
   @IsInt()
@@ -24,4 +48,7 @@ export class FilterQueryParamsDto {
   @IsInt()
   @IsOptional()
   public max_area?: number;
+
+  @IsOptional()
+  public benefits: string;
 }

@@ -36,6 +36,7 @@ export class RealtyObjectController {
       maxPrice: queryParams.max_price,
       minArea: queryParams.min_area,
       maxArea: queryParams.max_area,
+      benefits: queryParams.benefits.split(',').map((item) => +item),
     });
   }
 }

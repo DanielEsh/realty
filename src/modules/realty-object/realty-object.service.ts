@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { Benefit } from '@prisma/client';
 import { PrismaService } from '../../prisma/prisma.service';
 import { CreateRealtyObjectDto } from './dto/create-realty-object.dto';
 
@@ -9,6 +10,7 @@ interface findAllParams {
   maxPrice?: number;
   minArea?: number;
   maxArea?: number;
+  benefits?: Benefit['id'][];
 }
 
 @Injectable()
@@ -29,7 +31,10 @@ export class RealtyObjectService {
   }
 
   public async findAll(params: findAllParams) {
-    const { take, cursor, minPrice, maxPrice, minArea, maxArea } = params;
+    const { take, cursor, minPrice, maxPrice, minArea, maxArea, benefits } =
+      params;
+
+    console.log('PARAMS', params);
 
     const realtyObjects = await this.prisma.realtyObject.findMany({
       take,
@@ -42,6 +47,13 @@ export class RealtyObjectService {
         area: {
           gte: minArea,
           lte: maxArea,
+        },
+        benefits: {
+          some: {
+            benefitId: {
+              in: benefits,
+            },
+          },
         },
       },
       include: {
@@ -75,7 +87,17 @@ export class RealtyObjectService {
     const hasNextPage =
       realtyObjects.length === take && realtyObjects.length < totalCount;
 
-    const transformedRealtyObjectResponse = realtyObjects.map(
+    const filteredRealtyObjects = realtyObjects.filter((realtyObject) => {
+      const realtyObjectBenefitsIds = realtyObject.benefits.map(
+        (benefit) => benefit.benefit.id,
+      );
+
+      return params.benefits.every((benefitId) =>
+        realtyObjectBenefitsIds.includes(benefitId),
+      );
+    });
+
+    const transformedRealtyObjectResponse = filteredRealtyObjects.map(
       (realtyObject) => {
         const benefits = realtyObject.benefits.map((benefit) => ({
           id: benefit.benefit.id,
