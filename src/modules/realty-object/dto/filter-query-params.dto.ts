@@ -55,4 +55,8 @@ export class FilterQueryParamsDto {
   @IsInt()
   @IsOptional()
   public furnish: number;
+
+  @IsInt()
+  @IsOptional()
+  public property: number;
 }

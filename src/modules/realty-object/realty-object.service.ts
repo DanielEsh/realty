@@ -12,6 +12,7 @@ interface findAllParams {
   maxArea?: number;
   benefits?: Benefit['id'][];
   furnish?: number;
+  property?: number;
 }
 
 @Injectable()
@@ -61,6 +62,14 @@ export class RealtyObjectService {
         filters.furnish = {
           is: {
             id: params.furnish,
+          },
+        };
+      }
+
+      if (params.property) {
+        filters.property = {
+          is: {
+            id: params.property,
           },
         };
       }
