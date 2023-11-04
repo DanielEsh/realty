@@ -24,7 +24,22 @@ export class RealtyObjectService {
       take,
       cursor: cursor ? { id: cursor } : undefined,
       include: {
-        benefits: true,
+        furnish: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+        benefits: {
+          select: {
+            benefit: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+        },
       },
     });
 
@@ -33,8 +48,22 @@ export class RealtyObjectService {
     const hasNextPage =
       realtyObjects.length === take && realtyObjects.length < totalCount;
 
+    const transformedRealtyObjectResponse = realtyObjects.map(
+      (realtyObject) => {
+        const benefits = realtyObject.benefits.map((benefit) => ({
+          id: benefit.benefit.id,
+          name: benefit.benefit.name,
+        }));
+
+        return {
+          ...realtyObject,
+          benefits,
+        };
+      },
+    );
+
     return {
-      data: realtyObjects,
+      data: transformedRealtyObjectResponse,
       meta: {
         totalCount,
         cursor:
