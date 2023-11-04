@@ -24,6 +24,12 @@ export class RealtyObjectService {
       take,
       cursor: cursor ? { id: cursor } : undefined,
       include: {
+        property: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
         furnish: {
           select: {
             id: true,
