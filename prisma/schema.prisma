@@ -61,4 +61,20 @@ model RealtyObject {
   plan        String
   originalPrice Int
   price         Int
+  requests Request[]
+}
+
+enum RequestType {
+  BOOKING
+  CALLBACK
+}
+
+model Request {
+  id          Int      @id @default(autoincrement())
+  type RequestType @default(CALLBACK)
+  name String
+  phone String
+  email String?
+  realtyObjectId Int?
+  realtyObject RealtyObject? @relation(fields: [realtyObjectId], references: [id])
 }
