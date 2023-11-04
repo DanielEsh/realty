@@ -1,13 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { CreateRealtyObjectDto } from './dto/create-realty-object.dto';
+import { connect } from 'rxjs';
 
 @Injectable()
 export class RealtyObjectService {
   constructor(private prisma: PrismaService) {}
 
   public async create(createRealtyObjectDto: CreateRealtyObjectDto) {
-    return this.prisma.realtyObject.create({ data: createRealtyObjectDto });
+    return this.prisma.realtyObject.create({
+      data: createRealtyObjectDto,
+    });
   }
 
   public async findAll(cursor: number | null, take: number) {

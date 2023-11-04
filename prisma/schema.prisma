@@ -29,6 +29,21 @@ model Furnish {
   realtyObjects RealtyObject[]
 }
 
+model Benefit {
+  id Int @id @default(autoincrement())
+  name String
+  description String?
+  realtyObjects RealtyObjectBenefit[]
+}
+
+model RealtyObjectBenefit {
+  id Int @id @default(autoincrement())
+  realtyObjectId Int
+  benefitId Int
+  realtyObject RealtyObject @relation(fields: [realtyObjectId], references: [id])
+  benefit Benefit @relation(fields: [benefitId], references: [id])
+}
+
 model RealtyObject {
   id          Int      @id @default(autoincrement())
   number      String
@@ -37,6 +52,7 @@ model RealtyObject {
   propertyId Int
   furnish    Furnish? @relation(fields: [furnishId], references: [id])
   furnishId Int?
+  benefits RealtyObjectBenefit[]
   rooms       Int
   floor       Int
   total_floors Int
