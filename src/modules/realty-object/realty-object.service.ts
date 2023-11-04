@@ -148,7 +148,6 @@ export class RealtyObjectService {
     );
 
     return {
-      data: transformedRealtyObjectResponse,
       meta: {
         totalCount,
         cursor:
@@ -157,6 +156,7 @@ export class RealtyObjectService {
             : null,
         hasNextPage,
       },
+      data: transformedRealtyObjectResponse,
     };
   }
 }
