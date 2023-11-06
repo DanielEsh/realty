@@ -2,6 +2,7 @@ import {
   IsArray,
   IsEnum,
   IsInt,
+  IsNumber,
   IsOptional,
   ValidationArguments,
   ValidatorConstraint,
@@ -43,11 +44,11 @@ export class FilterQueryParamsDto {
   @IsOptional()
   public max_price?: number;
 
-  @IsInt()
+  @IsNumber()
   @IsOptional()
   public min_area?: number;
 
-  @IsInt()
+  @IsNumber()
   @IsOptional()
   public max_area?: number;
 
