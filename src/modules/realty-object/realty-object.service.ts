@@ -173,7 +173,7 @@ export class RealtyObjectService {
   }
 
   public async findOneById(id: number) {
-    const realtyObject = await this.prisma.realtyObject.findFirst({
+    return this.prisma.realtyObject.findFirst({
       where: { id },
       include: {
         property: {
@@ -200,7 +200,5 @@ export class RealtyObjectService {
         },
       },
     });
-
-    return realtyObject;
   }
 }
