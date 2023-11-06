@@ -221,6 +221,9 @@ export class RealtyObjectService {
       select: {
         rooms: true,
       },
+      orderBy: {
+        rooms: 'asc',
+      },
     });
 
     const benefits = await this.prisma.benefit.findMany({
