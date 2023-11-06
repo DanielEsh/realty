@@ -16,52 +16,52 @@ enum RealtyObjectType {
 }
 
 model Property {
-  id Int @id @default(autoincrement())
-  name String
-  description String?
+  id            Int            @id @default(autoincrement())
+  name          String
+  description   String?
   realtyObjects RealtyObject[]
 }
 
 model Furnish {
-  id Int @id @default(autoincrement())
-  name String
-  description String?
+  id            Int            @id @default(autoincrement())
+  name          String
+  description   String?
   realtyObjects RealtyObject[]
 }
 
 model Benefit {
-  id Int @id @default(autoincrement())
-  name String
-  description String?
+  id            Int                   @id @default(autoincrement())
+  name          String
+  description   String?
   realtyObjects RealtyObjectBenefit[]
 }
 
 model RealtyObjectBenefit {
   realtyObjectId Int
-  benefitId Int
-  realtyObject RealtyObject @relation(fields: [realtyObjectId], references: [id])
-  benefit Benefit @relation(fields: [benefitId], references: [id])
+  benefitId      Int
+  realtyObject   RealtyObject @relation(fields: [realtyObjectId], references: [id])
+  benefit        Benefit      @relation(fields: [benefitId], references: [id])
 
   @@id([realtyObjectId, benefitId])
 }
 
 model RealtyObject {
-  id          Int      @id @default(autoincrement())
-  number      String
-  type        RealtyObjectType @default(FLAT)
-  property    Property @relation(fields: [propertyId], references: [id])
-  propertyId Int
-  furnish    Furnish? @relation(fields: [furnishId], references: [id])
-  furnishId Int?
-  benefits RealtyObjectBenefit[]
-  rooms       Int
-  floor       Int
-  total_floors Int
-  area        Float
-  plan        String
+  id            Int                   @id @default(autoincrement())
+  number        String
+  type          RealtyObjectType      @default(FLAT)
+  property      Property              @relation(fields: [propertyId], references: [id])
+  propertyId    Int
+  furnish       Furnish?              @relation(fields: [furnishId], references: [id])
+  furnishId     Int?
+  benefits      RealtyObjectBenefit[]
+  rooms         Int
+  floor         Int
+  total_floors  Int
+  area          Float
+  plan          String
   originalPrice Int
   price         Int
-  requests Request[]
+  requests      Request[]
 }
 
 enum RequestType {
@@ -70,11 +70,11 @@ enum RequestType {
 }
 
 model Request {
-  id          Int      @id @default(autoincrement())
-  type RequestType @default(CALLBACK)
-  name String
-  phone String
-  email String?
+  id             Int           @id @default(autoincrement())
+  type           RequestType   @default(CALLBACK)
+  name           String
+  phone          String
+  email          String?
   realtyObjectId Int?
-  realtyObject RealtyObject? @relation(fields: [realtyObjectId], references: [id])
+  realtyObject   RealtyObject? @relation(fields: [realtyObjectId], references: [id])
 }
