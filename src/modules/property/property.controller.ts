@@ -2,7 +2,7 @@ import { Body, Controller, Get, Post } from '@nestjs/common';
 import { PropertyService } from './property.service';
 import { CreatePropertyDto } from './create-property.dto';
 
-@Controller('api/property')
+@Controller('property')
 export class PropertyController {
   constructor(private readonly propertyService: PropertyService) {}
 

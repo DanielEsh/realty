@@ -2,7 +2,7 @@ import { Body, Controller, Get, Post } from '@nestjs/common';
 import { FurnishService } from './furnish.service';
 import { CreateFurnishDto } from './create-furnish.dto';
 
-@Controller('api/furnish')
+@Controller('furnish')
 export class FurnishController {
   constructor(private readonly furnishService: FurnishService) {}
 

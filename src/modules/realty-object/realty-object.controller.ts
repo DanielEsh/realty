@@ -12,7 +12,7 @@ import { RealtyObjectService } from './realty-object.service';
 import { CreateRealtyObjectDto } from './dto/create-realty-object.dto';
 import { FilterQueryParamsDto } from './dto/filter-query-params.dto';
 
-@Controller('api/filter')
+@Controller('filter')
 export class RealtyObjectController {
   constructor(private readonly realtyObjectService: RealtyObjectService) {}
 

@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { PrismaModule } from './prisma/prisma.module';
 import { RealtyObjectModule } from './modules/realty-object/realty-object.module';
 import { PropertyModule } from './modules/property/property.module';
@@ -17,7 +15,7 @@ import { RequestModule } from './modules/request/request.module';
     BenefitModule,
     RequestModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
