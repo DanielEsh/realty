@@ -15,6 +15,8 @@ interface findAllParams {
   property?: number;
   rooms?: number[];
   type?: string[];
+  sort?: string;
+  order?: 'asc' | 'desc';
 }
 
 @Injectable()
@@ -95,6 +97,9 @@ export class RealtyObjectService {
       take,
       cursor: cursor ? { id: cursor } : undefined,
       where: conditionsFilters(),
+      orderBy: {
+        [params.sort]: params.order,
+      },
       include: {
         property: {
           select: {

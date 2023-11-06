@@ -67,4 +67,10 @@ export class FilterQueryParamsDto {
 
   @IsOptional()
   public type: string;
+
+  @IsOptional()
+  public sort: string;
+
+  @IsOptional()
+  public order: 'asc' | 'desc';
 }

@@ -29,6 +29,7 @@ export class RealtyObjectController {
   )
   findAll(@Query() queryParams: FilterQueryParamsDto) {
     console.log('queryParams', queryParams);
+
     return this.realtyObjectService.findAll({
       cursor: queryParams.cursor,
       take: queryParams.take,
@@ -41,6 +42,8 @@ export class RealtyObjectController {
       property: queryParams.property,
       rooms: queryParams.benefits?.split(',').map((item) => +item) ?? [],
       type: queryParams.type?.split(',').map((item) => item.trim()) ?? [],
+      sort: queryParams.sort,
+      order: queryParams.order,
     });
   }
 }
