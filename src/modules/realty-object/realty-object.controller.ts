@@ -48,6 +48,11 @@ export class RealtyObjectController {
     });
   }
 
+  @Get('/specs')
+  getSpecs() {
+    return this.realtyObjectService.getSpecs();
+  }
+
   @Get(':id')
   findOneById(@Param('id') id: string) {
     return this.realtyObjectService.findOneById(+id);

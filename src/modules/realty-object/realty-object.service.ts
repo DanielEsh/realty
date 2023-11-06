@@ -201,4 +201,71 @@ export class RealtyObjectService {
       },
     });
   }
+
+  public async getSpecs() {
+    const specs = await this.prisma.realtyObject.aggregate({
+      _max: {
+        price: true,
+        area: true,
+        floor: true,
+      },
+      _min: {
+        price: true,
+        area: true,
+        floor: true,
+      },
+    });
+
+    const rooms = await this.prisma.realtyObject.findMany({
+      distinct: ['rooms'],
+      select: {
+        rooms: true,
+      },
+    });
+
+    const benefits = await this.prisma.benefit.findMany({
+      select: {
+        id: true,
+        name: true,
+      },
+    });
+
+    const furnish = await this.prisma.furnish.findMany({
+      select: {
+        id: true,
+        name: true,
+      },
+    });
+
+    return {
+      types: [
+        {
+          id: RealtyObjectType.FLAT,
+          name: RealtyObjectType.FLAT,
+        },
+        {
+          id: RealtyObjectType.APARTMENT,
+          name: RealtyObjectType.APARTMENT,
+        },
+      ],
+      rooms: rooms.map((room) => ({
+        id: room.rooms,
+        name: room.rooms,
+      })),
+      price: {
+        min: specs._min.price,
+        max: specs._max.price,
+      },
+      area: {
+        min: specs._min.area,
+        max: specs._max.area,
+      },
+      floors: {
+        min: specs._min.floor,
+        max: specs._max.floor,
+      },
+      furnish,
+      benefits,
+    };
+  }
 }
