@@ -171,4 +171,36 @@ export class RealtyObjectService {
       data: transformedRealtyObjectResponse,
     };
   }
+
+  public async findOneById(id: number) {
+    const realtyObject = await this.prisma.realtyObject.findFirst({
+      where: { id },
+      include: {
+        property: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+        furnish: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+        benefits: {
+          select: {
+            benefit: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    return realtyObject;
+  }
 }

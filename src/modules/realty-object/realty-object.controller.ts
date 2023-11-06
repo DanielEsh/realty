@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Post,
   Query,
   UsePipes,
@@ -45,5 +46,10 @@ export class RealtyObjectController {
       sort: queryParams.sort,
       order: queryParams.order,
     });
+  }
+
+  @Get(':id')
+  findOneById(@Param('id') id: string) {
+    return this.realtyObjectService.findOneById(+id);
   }
 }
