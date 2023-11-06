@@ -4,8 +4,8 @@ import { PrismaService } from '../../prisma/prisma.service';
 import { CreateRealtyObjectDto } from './dto/create-realty-object.dto';
 
 interface findAllParams {
-  cursor: number;
-  take: number;
+  offset?: number;
+  limit?: number;
   minPrice?: number;
   maxPrice?: number;
   minArea?: number;
@@ -37,8 +37,7 @@ export class RealtyObjectService {
   }
 
   public async findAll(params: findAllParams) {
-    const { take, cursor, minPrice, maxPrice, minArea, maxArea, benefits } =
-      params;
+    const { minPrice, maxPrice, minArea, maxArea, benefits } = params;
 
     const conditionsFilters = () => {
       const filters: Prisma.RealtyObjectWhereInput = {
@@ -94,8 +93,8 @@ export class RealtyObjectService {
     };
 
     const realtyObjects = await this.prisma.realtyObject.findMany({
-      take,
-      cursor: cursor ? { id: cursor } : undefined,
+      take: params?.limit,
+      skip: params?.offset,
       where: conditionsFilters(),
       orderBy: {
         [params.sort]: params.order,
@@ -128,8 +127,13 @@ export class RealtyObjectService {
 
     const totalCount = await this.prisma.realtyObject.count();
 
-    const hasNextPage =
-      realtyObjects.length === take && realtyObjects.length < totalCount;
+    const next =
+      params.offset + params.limit < totalCount
+        ? params.offset + params.limit
+        : null;
+
+    const prev =
+      params.offset - params.limit >= 0 ? params.offset - params.limit : null;
 
     const filteredRealtyObjects = realtyObjects.filter((realtyObject) => {
       if (params.benefits.length) {
@@ -166,7 +170,8 @@ export class RealtyObjectService {
           realtyObjects.length > 0
             ? realtyObjects[realtyObjects.length - 1].id
             : null,
-        hasNextPage,
+        next,
+        prev,
       },
       data: transformedRealtyObjectResponse,
     };

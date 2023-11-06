@@ -30,11 +30,11 @@ export class IsIntArray implements ValidatorConstraintInterface {
 export class FilterQueryParamsDto {
   @IsInt()
   @IsOptional()
-  public cursor?: number;
+  public offset?: number;
 
   @IsInt()
   @IsOptional()
-  public take?: number;
+  public limit?: number;
 
   @IsInt()
   @IsOptional()

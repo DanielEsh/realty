@@ -32,8 +32,8 @@ export class RealtyObjectController {
     console.log('queryParams', queryParams);
 
     return this.realtyObjectService.findAll({
-      cursor: queryParams.cursor,
-      take: queryParams.take,
+      limit: queryParams.limit,
+      offset: queryParams.offset,
       minPrice: queryParams.min_price,
       maxPrice: queryParams.max_price,
       minArea: queryParams.min_area,
@@ -62,8 +62,8 @@ export class RealtyObjectController {
   )
   getFacets(@Query() queryParams: FilterQueryParamsDto) {
     return this.realtyObjectService.getFacets({
-      cursor: queryParams.cursor,
-      take: queryParams.take,
+      limit: queryParams.limit,
+      offset: queryParams.offset,
       minPrice: queryParams.min_price,
       maxPrice: queryParams.max_price,
       minArea: queryParams.min_area,
