@@ -52,6 +52,14 @@ export class FilterQueryParamsDto {
   @IsOptional()
   public max_area?: number;
 
+  @IsInt()
+  @IsOptional()
+  public min_floor?: number;
+
+  @IsInt()
+  @IsOptional()
+  public max_floor?: number;
+
   @IsOptional()
   public benefits: string;
 

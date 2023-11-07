@@ -6,6 +6,8 @@ import { CreateRealtyObjectDto } from './dto/create-realty-object.dto';
 interface findAllParams {
   offset?: number;
   limit?: number;
+  minFloor?: number;
+  maxFloor?: number;
   minPrice?: number;
   maxPrice?: number;
   minArea?: number;
@@ -48,6 +50,10 @@ export class RealtyObjectService {
         area: {
           gte: minArea,
           lte: maxArea,
+        },
+        floor: {
+          gte: params.minFloor,
+          lte: params.maxFloor,
         },
       };
 
@@ -166,10 +172,6 @@ export class RealtyObjectService {
     return {
       meta: {
         totalCount,
-        cursor:
-          realtyObjects.length > 0
-            ? realtyObjects[realtyObjects.length - 1].id
-            : null,
         next,
         prev,
       },
