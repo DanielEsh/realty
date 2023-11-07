@@ -300,6 +300,10 @@ export class RealtyObjectService {
           gte: params.minArea,
           lte: params.maxArea,
         },
+        floor: {
+          gte: params.minFloor,
+          lte: params.maxFloor,
+        },
       },
     });
 
