@@ -1,6 +1,4 @@
 import {
-  IsArray,
-  IsEnum,
   IsInt,
   IsNumber,
   IsOptional,
@@ -8,7 +6,6 @@ import {
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from 'class-validator';
-import { RealtyObjectType } from '@prisma/client';
 
 @ValidatorConstraint({ name: 'isIntArray', async: false })
 export class IsIntArray implements ValidatorConstraintInterface {
