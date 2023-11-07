@@ -247,8 +247,15 @@ export class RealtyObjectService {
       },
     });
 
+    const property = await this.prisma.property.findMany({
+      select: {
+        id: true,
+        name: true,
+      },
+    });
+
     return {
-      types: [
+      type: [
         {
           id: RealtyObjectType.FLAT,
           name: RealtyObjectType.FLAT,
@@ -270,11 +277,12 @@ export class RealtyObjectService {
         min: specs._min.area,
         max: specs._max.area,
       },
-      floors: {
+      floor: {
         min: specs._min.floor,
         max: specs._max.floor,
       },
       furnish,
+      property,
       benefits,
     };
   }
@@ -352,8 +360,29 @@ export class RealtyObjectService {
       },
     });
 
+    const getPropertyWhere = () => {
+      const filter: any = {};
+      if (!params.property) {
+        return filter;
+      }
+
+      filter.property = {
+        in: params.property,
+      };
+
+      return;
+    };
+
+    const property = await this.prisma.property.findMany({
+      where: getPropertyWhere(),
+      select: {
+        id: true,
+        name: true,
+      },
+    });
+
     return {
-      types: [
+      type: [
         {
           id: RealtyObjectType.FLAT,
           name: RealtyObjectType.FLAT,
@@ -375,11 +404,12 @@ export class RealtyObjectService {
         min: facets._min.area,
         max: facets._max.area,
       },
-      floors: {
+      floor: {
         min: facets._min.floor,
         max: facets._max.floor,
       },
       furnish,
+      property,
     };
   }
 }
