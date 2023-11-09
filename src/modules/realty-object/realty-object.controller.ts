@@ -31,6 +31,18 @@ export class RealtyObjectController {
   findAll(@Query() queryParams: FilterQueryParamsDto) {
     console.log('queryParams', queryParams);
 
+    console.log('ROOMS', queryParams.rooms);
+
+    const getRooms = () => {
+      if (!queryParams.rooms) return [];
+
+      if (Array.isArray(queryParams.rooms)) {
+        return queryParams.rooms.map((item) => +item);
+      }
+
+      return [+queryParams.rooms];
+    };
+
     return this.realtyObjectService.findAll({
       limit: queryParams.limit,
       offset: queryParams.offset,
@@ -43,7 +55,7 @@ export class RealtyObjectController {
       benefits: queryParams.benefits?.split(',').map((item) => +item) ?? [],
       furnish: queryParams.furnish,
       property: queryParams.property,
-      rooms: queryParams.benefits?.split(',').map((item) => +item) ?? [],
+      rooms: getRooms(),
       type: queryParams.type?.split(',').map((item) => item.trim()) ?? [],
       sort: queryParams.sort,
       order: queryParams.order,
@@ -75,7 +87,7 @@ export class RealtyObjectController {
       benefits: queryParams.benefits?.split(',').map((item) => +item) ?? [],
       furnish: queryParams.furnish,
       property: queryParams.property,
-      rooms: queryParams.benefits?.split(',').map((item) => +item) ?? [],
+      rooms: queryParams.rooms?.split(',').map((item) => +item) ?? [],
       type: queryParams.type?.split(',').map((item) => item.trim()) ?? [],
       sort: queryParams.sort,
       order: queryParams.order,

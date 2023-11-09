@@ -15,7 +15,7 @@ interface findAllParams {
   benefits?: Benefit['id'][];
   furnish?: number;
   property?: number;
-  rooms?: number[];
+  rooms?: any;
   type?: string[];
   sort?: string;
   order?: 'asc' | 'desc';
@@ -83,6 +83,7 @@ export class RealtyObjectService {
         };
       }
 
+      console.log('params', params.rooms);
       if (params.rooms.length) {
         filters.rooms = {
           in: params.rooms,
@@ -311,6 +312,9 @@ export class RealtyObjectService {
         floor: {
           gte: params.minFloor,
           lte: params.maxFloor,
+        },
+        type: {
+          in: ['APARTMENT'],
         },
       },
     });
