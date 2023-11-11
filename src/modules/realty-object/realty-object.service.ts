@@ -39,70 +39,10 @@ export class RealtyObjectService {
   }
 
   public async findAll(params: findAllParams) {
-    const { minPrice, maxPrice, minArea, maxArea, benefits } = params;
-
-    const conditionsFilters = () => {
-      const filters: Prisma.RealtyObjectWhereInput = {
-        price: {
-          gte: minPrice,
-          lte: maxPrice,
-        },
-        area: {
-          gte: minArea,
-          lte: maxArea,
-        },
-        floor: {
-          gte: params.minFloor,
-          lte: params.maxFloor,
-        },
-      };
-
-      if (params.benefits.length) {
-        filters.benefits = {
-          some: {
-            benefitId: {
-              in: benefits,
-            },
-          },
-        };
-      }
-
-      if (params.furnish) {
-        filters.furnish = {
-          is: {
-            id: params.furnish,
-          },
-        };
-      }
-
-      if (params.property) {
-        filters.property = {
-          is: {
-            id: params.property,
-          },
-        };
-      }
-
-      console.log('params', params.rooms);
-      if (params.rooms.length) {
-        filters.rooms = {
-          in: params.rooms,
-        };
-      }
-
-      if (params.type.length) {
-        filters.type = {
-          in: params.type as RealtyObjectType[],
-        };
-      }
-
-      return filters;
-    };
-
     const realtyObjects = await this.prisma.realtyObject.findMany({
       take: params?.limit,
       skip: params?.offset,
-      where: conditionsFilters(),
+      where: this.getConditionsFilter(params),
       orderBy: {
         [params.sort]: params.order,
       },
@@ -178,6 +118,63 @@ export class RealtyObjectService {
       },
       data: transformedRealtyObjectResponse,
     };
+  }
+
+  private getConditionsFilter(params: findAllParams) {
+    const filters: Prisma.RealtyObjectWhereInput = {
+      price: {
+        gte: params.minPrice,
+        lte: params.maxPrice,
+      },
+      area: {
+        gte: params.minArea,
+        lte: params.maxArea,
+      },
+      floor: {
+        gte: params.minFloor,
+        lte: params.maxFloor,
+      },
+    };
+
+    if (params.benefits.length) {
+      filters.benefits = {
+        some: {
+          benefitId: {
+            in: params.benefits,
+          },
+        },
+      };
+    }
+
+    if (params.furnish) {
+      filters.furnish = {
+        is: {
+          id: params.furnish,
+        },
+      };
+    }
+
+    if (params.property) {
+      filters.property = {
+        is: {
+          id: params.property,
+        },
+      };
+    }
+
+    if (params.rooms.length) {
+      filters.rooms = {
+        in: params.rooms,
+      };
+    }
+
+    if (params.type.length) {
+      filters.type = {
+        in: params.type as RealtyObjectType[],
+      };
+    }
+
+    return filters;
   }
 
   public async findOneById(id: number) {

@@ -29,10 +29,6 @@ export class RealtyObjectController {
     }),
   )
   findAll(@Query() queryParams: FilterQueryParamsDto) {
-    console.log('queryParams', queryParams);
-
-    console.log('ROOMS', queryParams.rooms);
-
     const getRooms = () => {
       if (!queryParams.rooms) return [];
 
