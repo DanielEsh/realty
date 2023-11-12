@@ -45,6 +45,8 @@ def generate_property():
 
     generate_property['plan'] = str(generate_property['rooms']) + '_' + str(random.choice(plan))
 
+    generate_property['price'] = (generate_property['price'] // 10000) * 10000
+
     if random.random() < 0.2:
         discount_percentage = 0.3
 
@@ -69,11 +71,12 @@ url = 'http://localhost:3000/api/filter'
 
 # print(response.json())
 
-items = 20
+items = 1000
 
 for _ in range(items):
     generate_object = generate_property()
     response = requests.post(url, json=generate_object)
+    # print('CREATED:', generate_object)
     print('CREATED:', response.json())
     print('\n')
 
