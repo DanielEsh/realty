@@ -8,5 +8,6 @@ export class CreateRealtyObjectDto {
   originalPrice: number;
   price: number;
   propertyId: number;
+  furnishId: number;
   benefits?: number[];
 }
